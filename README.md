@@ -35,7 +35,22 @@ go get [github.com/muesli/smartcrop](https://github.com/muesli/smartcrop)
 go get [github.com/muesli/smartcrop/nfnt](https://github.com/muesli/smartcrop/nfnt)
 ```
 
-## 🚀 Run
+## 🎮 Usage
+Run the program from your terminal:
 ```bash
 go run main.go
 ```
+
+The interactive CLI will guide you through the setup. You can simply press **Enter** to accept the default values shown in the brackets []:
+1. **ORIGINAL folder**: The path to the folder containing your source photos.
+2. **DESTINATION folder**: Where the processed photos will be saved (Defaults to an **Output** folder inside your source path).
+3. **Target WIDTH**: The width of your digital frame in pixels (Defaults to **1280**).
+4. **Target HEIGHT**: The height of your digital frame in pixels (Defaults to **800**).
+
+Wait for the process to finish, and check your destination folder for the perfectly framed photos!
+
+## 📦 Dependencies & Credits
+FrameFit is built using these awesome open-source libraries:
+- [Pigo](https://github.com/esimov/pigo) - Pure Go face detection.
+- [Smartcrop](https://github.com/muesli/smartcrop) - Content-aware image cropping.
+- [Imaging](https://github.com/disintegration/imaging) - Simple image processing package for Go.
