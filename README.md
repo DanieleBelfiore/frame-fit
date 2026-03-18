@@ -19,9 +19,9 @@ You don't need to be a developer or install any programming tools to use FrameFi
 
 1. Go to the [Releases page](../../releases/latest) of this repository.
 2. Download the correct file for your operating system:
-   * **Windows:** Download the `.exe` file.
-   * **macOS:** Download the `.app` file.
-   * **Linux:** Download the `.tar.xz` file.
+   * **Windows:** Download the `FrameFit-Windows.zip` file (extract it and run the `FrameFit.exe` inside).
+   * **macOS:** Download the `FrameFit-Mac.zip` file (extract it to get the `FrameFit.app` application).
+   * **Linux:** Download the `FrameFit-Linux.zip` file (extract it and run the executable inside).
 3. Launch the application.
 4. Click **Browse...** to select your **Source Folder** (containing your original `.jpg` or `.png` images).
 5. Click **Browse...** to select a **Destination Folder** (where the resized images will be saved).
@@ -41,7 +41,7 @@ If you want to modify the code or build the application yourself, follow these s
 ### Setup & Run
 1. Clone the repository and navigate to the source folder:
    ```bash
-   git clone https://github.com/danielebelfiore/frame-fit.git
+   git clone [https://github.com/danielebelfiore/frame-fit.git](https://github.com/danielebelfiore/frame-fit.git)
    cd frame-fit/src
    ```
 2. Download dependencies:
@@ -57,7 +57,7 @@ If you want to modify the code or build the application yourself, follow these s
 ### Generating the App Executable
 To package the app into a final standalone file with its icon:
    ```bash
-   go run fyne.io/tools/cmd/fyne@latest package -icon icon.png
+   go run fyne.io/tools/cmd/fyne@latest package -name FrameFit -icon icon.png
    ```
 
 ---
@@ -66,5 +66,6 @@ To package the app into a final standalone file with its icon:
 
 This project uses **GitHub Actions** for Continuous Deployment. 
 Every time a new version tag (e.g., `v1.0.0`) is pushed to the repository, the pipeline automatically:
-1. Compiles the Go code for Windows, macOS and Linux.
-2. Creates a new public **Release** and attaches all the ready-to-use binaries automatically.
+1. Compiles the Go code for Windows, macOS, and Linux.
+2. Packages the executables into clean `.zip` archives for easy and safe distribution.
+3. Creates a new public **Release** and attaches all the ready-to-use `.zip` files automatically.
