@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"fmt"
 	"image"
 	"image/color"
@@ -26,15 +27,13 @@ import (
 	"github.com/ncruces/zenity"
 )
 
+var cascadeFile []byte
+
 var faceClassifier *pigo.Pigo
 
 func main() {
-	cascadeFile, err := os.ReadFile("facefinder")
-	if err != nil {
-		log.Fatalf("Error: Could not find 'facefinder' file.")
-	}
-
 	p := pigo.NewPigo()
+	var err error
 	faceClassifier, err = p.Unpack(cascadeFile)
 	if err != nil {
 		log.Fatalf("Error: Could not unpack model: %v", err)

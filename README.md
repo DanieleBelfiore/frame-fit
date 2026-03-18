@@ -23,6 +23,12 @@ You don't need to be a developer or install any programming tools to use FrameFi
    * **macOS:** Download the `FrameFit-Mac.zip` file (extract it to get the `FrameFit.app` application).
    * **Linux:** Download the `FrameFit-Linux.zip` file (extract it and run the executable inside).
 3. Launch the application.
+   * 🍏 **Note for macOS users:** If your Mac says the app is "damaged and can't be opened" or silently fails to launch, it's a false alarm caused by macOS Gatekeeper for independent apps. To unlock it, move `FrameFit.app` to your **Applications** folder, open the **Terminal**, and run these two commands:
+     ```bash
+     xattr -cr /Applications/FrameFit.app
+     codesign --force --deep --sign - /Applications/FrameFit.app
+     ```
+     The first command removes the quarantine, and the second restores the local signature. You can now open the app normally via Finder!
 4. Click **Browse...** to select your **Source Folder** (containing your original `.jpg` or `.png` images).
 5. Click **Browse...** to select a **Destination Folder** (where the resized images will be saved).
 6. Set your target **Width** and **Height** in pixels.
