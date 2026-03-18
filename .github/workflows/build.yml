@@ -28,22 +28,34 @@ jobs:
 
       - name: Install Linux Dependencies
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y gcc libgl1-mesa-dev xorg-dev
+        run: sudo apt-get update && sudo apt-get install -y gcc libgl1-mesa-dev xorg-dev zip
 
       - name: Build App
         working-directory: ./src
-        run: go run fyne.io/tools/cmd/fyne@latest package -icon icon.png
+        run: go run fyne.io/tools/cmd/fyne@latest package -name FrameFit -icon icon.png
 
       - name: Zip Mac App
         if: runner.os == 'macOS'
         working-directory: ./src
         run: zip -r FrameFit-Mac.zip FrameFit.app
 
+      - name: Zip Windows App
+        if: runner.os == 'Windows'
+        working-directory: ./src
+        run: Compress-Archive -Path FrameFit.exe -DestinationPath FrameFit-Windows.zip
+
+      - name: Zip Linux App
+        if: runner.os == 'Linux'
+        working-directory: ./src
+        run: |
+          tar -xf FrameFit.tar.xz
+          zip -r FrameFit-Linux.zip usr/
+
       - name: Publish Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            src/*.exe
-            src/*.tar.xz
+            src/FrameFit-Windows.zip
+            src/FrameFit-Linux.zip
             src/FrameFit-Mac.zip
