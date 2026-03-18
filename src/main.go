@@ -1,7 +1,7 @@
 package main
 
 import (
-	"embed"
+	_ "embed"
 	"fmt"
 	"image"
 	"image/color"
@@ -27,6 +27,7 @@ import (
 	"github.com/ncruces/zenity"
 )
 
+//go:embed facefinder
 var cascadeFile []byte
 
 var faceClassifier *pigo.Pigo

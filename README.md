@@ -20,15 +20,17 @@ You don't need to be a developer or install any programming tools to use FrameFi
 1. Go to the [Releases page](../../releases/latest) of this repository.
 2. Download the correct file for your operating system:
    * **Windows:** Download the `FrameFit-Windows.zip` file (extract it and run the `FrameFit.exe` inside).
+     * 🪟 **Note for Windows users:** If you see a blue "Windows protected your PC" screen, it is a standard security warning for independent/unsigned apps. Just click **More info** and then **Run anyway**.
    * **macOS:** Download the `FrameFit-Mac.zip` file (extract it to get the `FrameFit.app` application).
+     * 🍏 **Note for macOS users:** If your Mac says the app is "damaged and can't be opened" or silently fails to launch, it's a false alarm caused by macOS Gatekeeper for independent apps. To unlock it, move `FrameFit.app` to your **Applications** folder, open the **Terminal**, and run these two commands:
+       ```bash
+       xattr -cr /Applications/FrameFit.app
+       codesign --force --deep --sign - /Applications/FrameFit.app
+       ```
+       The first command removes the quarantine, and the second restores the local signature. You can now open the app normally via Finder!
    * **Linux:** Download the `FrameFit-Linux.zip` file (extract it and run the executable inside).
+     * 🐧 **Note for Linux users:** You may need to grant execution permissions before running the app. Open your terminal in the extracted folder and run `chmod +x FrameFit`, or right-click the file, go to Properties, and check "Allow executing file as program".
 3. Launch the application.
-   * 🍏 **Note for macOS users:** If your Mac says the app is "damaged and can't be opened" or silently fails to launch, it's a false alarm caused by macOS Gatekeeper for independent apps. To unlock it, move `FrameFit.app` to your **Applications** folder, open the **Terminal**, and run these two commands:
-     ```bash
-     xattr -cr /Applications/FrameFit.app
-     codesign --force --deep --sign - /Applications/FrameFit.app
-     ```
-     The first command removes the quarantine, and the second restores the local signature. You can now open the app normally via Finder!
 4. Click **Browse...** to select your **Source Folder** (containing your original `.jpg` or `.png` images).
 5. Click **Browse...** to select a **Destination Folder** (where the resized images will be saved).
 6. Set your target **Width** and **Height** in pixels.
