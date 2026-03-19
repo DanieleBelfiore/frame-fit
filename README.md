@@ -2,6 +2,8 @@
 
 FrameFit is a smart, automated batch image resizing tool designed to perfectly crop and fit your photos into a specific target resolution. It uses AI face detection and smart cropping to ensure the most important subjects (like people) are always kept in the frame, while applying a professional cinematic background blur to vertical/portrait photos.
 
+![alt text](Screenshot.png "Screenshot")
+
 ## ✨ Features
 
 * **🧠 Smart Face Detection:** Uses the `pigo` cascade classifier to detect faces and perfectly center them within the new frame.
