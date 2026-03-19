@@ -6,8 +6,8 @@ FrameFit is a smart, automated batch image resizing tool designed to perfectly c
 
 ## ✨ Features
 
-* **🧠 Smart Face Detection:** Uses the `pigo` cascade classifier to detect faces and perfectly center them within the new frame.
-* **🎯 Smart Cropping:** Fallback to `smartcrop` for images without faces to automatically find the most interesting part of the picture.
+* **🧠 Smart Face Detection:** Uses the [pigo](https://github.com/esimov/pigo) cascade classifier to detect faces and perfectly center them within the new frame.
+* **🎯 Smart Cropping:** Fallback to [smartcrop](https://github.com/muesli/smartcrop) for images without faces to automatically find the most interesting part of the picture.
 * **🎬 Cinematic Blur:** Automatically detects portrait (vertical) images and applies a beautiful, feathered cinematic background blur to fit landscape dimensions seamlessly.
 * **🖥️ Modern GUI:** Easy-to-use graphical interface powered by [Fyne](https://fyne.io/), complete with native OS folder selection dialogs via [Zenity](https://github.com/ncruces/zenity).
 * **📦 Standalone Executable:** The AI model is securely embedded directly into the app. No extra files or installations required for the end user!
