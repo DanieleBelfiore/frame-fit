@@ -74,7 +74,10 @@ To package the app into a final standalone file with its icon:
 ## ⚙️ Automated Builds (CI/CD)
 
 This project uses **GitHub Actions** for Continuous Deployment. 
-Every time a new version tag (e.g., `v1.0.0`) is pushed to the repository, the pipeline automatically:
-1. Compiles the Go code for Windows, macOS, and Linux.
-2. Packages the executables into clean `.zip` archives for easy and safe distribution.
-3. Creates a new public **Release** and attaches all the ready-to-use `.zip` files automatically.
+Every push to `main` triggers the pipeline, which automatically:
+1. Computes the next version from the commit prefixes since the last tag (`‼️ BREAKING` → major, `📦 NEW` → minor, `📖 DOC` / `🤖 TEST` / `🦄 RELEASE` → no release, anything else → patch). `[skip release]` in the newest commit subject postpones the release to the next push.
+2. Compiles the Go code for Windows, macOS, and Linux.
+3. Packages the executables into clean `.zip` archives for easy and safe distribution.
+4. Creates a new public **Release** with its version tag and attaches all the ready-to-use `.zip` files automatically.
+
+The version logic lives in `.github/scripts/next-version.sh` (tests: `bash .github/scripts/next-version.test.sh`).

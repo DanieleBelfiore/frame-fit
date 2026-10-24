@@ -2,26 +2,55 @@ name: Build and Release FrameFit
 
 on:
   push:
-    tags:
-      - "v*"
+    # Every push to main may release: the version comes from the commit
+    # prefixes since the last tag (.github/scripts/next-version.sh).
+    branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+# One release at a time, so two quick pushes never compute the same version.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 jobs:
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.next.outputs.version }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # full history and tags
+
+      - name: Compute next version from commit prefixes
+        id: next
+        run: |
+          set -euo pipefail
+          LAST=$(git describe --tags --abbrev=0 --match 'v[0-9]*' 2>/dev/null || echo v0.0.0)
+          RANGE="$LAST..HEAD"
+          if [ "$LAST" = v0.0.0 ]; then RANGE=HEAD; fi
+          VERSION=$(git log --no-merges --format=%s "$RANGE" | bash .github/scripts/next-version.sh "$LAST")
+          echo "Last tag: $LAST, next version: ${VERSION:-none, no release}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
   build:
+    needs: version
+    if: needs.version.outputs.version != ''
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
 
-    permissions:
-      contents: write
-
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup Go
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@v7
         with:
           go-version: "1.26"
           cache-dependency-path: src/go.mod
@@ -51,11 +80,37 @@ jobs:
           tar -xf FrameFit.tar.xz
           zip -r FrameFit-Linux.zip usr/
 
-      - name: Publish Release
-        uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/')
+      # The release job publishes the zips once every OS has built.
+      - name: Upload zip
+        uses: actions/upload-artifact@v7
         with:
-          files: |
-            src/FrameFit-Windows.zip
-            src/FrameFit-Linux.zip
-            src/FrameFit-Mac.zip
+          name: zip-${{ runner.os }}
+          path: src/FrameFit-*.zip
+          if-no-files-found: error
+
+  release:
+    needs: [version, build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download zips
+        uses: actions/download-artifact@v8
+        with:
+          pattern: zip-*
+          path: zips
+          merge-multiple: true
+
+      # Creates the tag on the built commit, only after every OS has built.
+      # gh CLI (preinstalled), not a third-party action: this job can write.
+      - name: Publish Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.version.outputs.version }}
+        run: |
+          gh release create "v$VERSION" \
+            zips/FrameFit-Windows.zip zips/FrameFit-Linux.zip zips/FrameFit-Mac.zip \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "v$VERSION" \
+            --generate-notes
