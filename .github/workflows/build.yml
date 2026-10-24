@@ -76,8 +76,10 @@ jobs:
       - name: Zip Linux App
         if: runner.os == 'Linux'
         working-directory: ./src
+        # fyne tools 1.7+ wraps the tarball in a FrameFit/ folder: strip it
+        # so the zip keeps usr/ at its root, as in earlier releases.
         run: |
-          tar -xf FrameFit.tar.xz
+          tar -xf FrameFit.tar.xz --strip-components=1
           zip -r FrameFit-Linux.zip usr/
 
       # The release job publishes the zips once every OS has built.
